@@ -1,0 +1,30 @@
+services:
+  mysql:
+    image: mysql/mysql-server:latest
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=meubanco
+      - MYSQL_ROOT_PASSWORD=Senha123
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-volume:/var/lib/mysql
+  
+  nginx:
+    build:
+      dockerfile: nginx/Dockerfile 
+      context: .
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+  
+volumes:
+  mysql-volume:
+    driver: local
+  
+  nginx-volume:
+    driver: local
